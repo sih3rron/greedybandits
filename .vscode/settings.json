@@ -1,0 +1,4 @@
+{
+	"launchdarkly.project": "default",
+	"launchdarkly.env": "production"
+}
