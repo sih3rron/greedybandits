@@ -5,15 +5,16 @@ const path = require('path');
 const fetch = require('node-fetch');
 const { v4: uuidv4 } = require('uuid');
 const LaunchDarkly = require('launchdarkly-node-server-sdk');
-const { Console } = require('console');
 var app = express();
 
-//variable assignments
 const port = process.env.PORT || 8080
+
+//URI
 const getResults = `https://app.launchdarkly.com/api/v2/flags/${process.env.PROJECT}/${process.env.FLAG}/experiments/${process.env.ENV}/${process.env.METRIC_KEY}`;
 const targetFlag = `https://app.launchdarkly.com/api/v2/flags/${process.env.PROJECT}/${process.env.FLAG}?env=${process.env.ENV}`;
 
 //Container Variables for MABs data retrieval
+let treatments = []
 let totals = []
 let flagData = []
 
@@ -83,11 +84,23 @@ Promise.all([
 	fetch(targetFlag, getConfig).then(response => response.json())
 ])
 .then(json => {
-	totals = json[0].totals
 	flagData = json[1]
+	treatments = json[0].metadata
+	totals = json[0].totals
+	
 	let on = flagData.environments.production.on
 	console.log(on ? "I'm on." : "I'm off.");
-	let fallthrough = flagData.environments.production.fallthrough.rollout.experimentAllocation || false
+
+//let fallthrough = flagData.environments.production.fallthrough.rollout.experimentAllocation || false
+	let wholeMetadata = treatments.map((item, i) => Object.assign({}, item, totals[i]));
+
+//Your maximum conversion rate
+	let maxConversion = Math.max.apply(Math, wholeMetadata.map((variant) => { 
+		return variant.cumulativeConversionRate.toFixed(3) * 100;
+	}))
+
+	let highestPerformer = wholeMetadata.find((variant) => { return variant.cumulativeConversionRate.toFixed(3) * 100 == maxConversion })
+	console.log(highestPerformer)
 })
 .catch(error => {
 	console.warn(error);

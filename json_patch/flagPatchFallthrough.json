@@ -3,6 +3,6 @@
     "patch": [{ 
         "op": "replace",
         "path": "/environments/production/fallthrough/rollout/experimentAllocation/defaultVariation",
-        "value": 1
+        "value": 0
     }]
 }
