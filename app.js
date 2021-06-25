@@ -6,6 +6,8 @@ const fetch = require('node-fetch');
 const { v4: uuidv4 } = require('uuid');
 const LaunchDarkly = require('launchdarkly-node-server-sdk');
 var app = express();
+const flagPatch = require('./flagPatch.json')
+
 //variable assignments
 const port = process.env.PORT || 8080
 const getResults = `https://app.launchdarkly.com/api/v2/flags/${process.env.PROJECT}/${process.env.FLAG}/experiments/${process.env.ENV}/${process.env.METRIC_KEY}`;
@@ -50,7 +52,8 @@ let patchConfig = {
 		"Content-Type": "application/json; domain-model=launchdarkly.semanticpatch",
 		"authorization": process.env.API_TOKEN,
 		"LD-API-Version": "beta"
-	}
+	},
+	"body": JSON.stringify(flagPatch)
 }
 
 //LD Flag Logic.
@@ -85,13 +88,16 @@ Promise.all([
 	flagData = json[1]
 	let on = flagData.environments.production.on
 	console.log(on ? "I'm on." : "I'm off.");
-
+	//console.log(flagData.environments.production.fallthrough.rollout.variations)
+	//flagData.experiments.baselineIdx = '0';
+	//console.log(flagData.experiments);
 	//The optimal rate for right now.
-	Math.max.apply(Math, totals.map(function(total) { 
-		return console.log(total.cumulativeConversionRate.toFixed(3) * 100);
-	}))
+	//Math.max.apply(Math, totals.map(function(total) { 
+	//	return total.cumulativeConversionRate.toFixed(3) * 100;
+	//}))
 })
 .catch(error => {
 	console.warn(error);
 })
 
+fetch(targetFlag, patchConfig)

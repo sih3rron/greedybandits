@@ -1,0 +1,203 @@
+{
+    "name": "2021-June-MABs-Demo-Temp",
+    "kind": "multivariate",
+    "description": "",
+    "key": "2021-June-MABs-Demo-Temp",
+    "_version": 14,
+    "creationDate": 1624473157016,
+    "includeInSnippet": true,
+    "clientSideAvailability": {
+        "usingMobileKey": false,
+        "usingEnvironmentId": true
+    },
+    "variations": [
+        {
+            "_id": "1a3ea207-765d-488b-83f7-4b385d439cde",
+            "value": "World",
+            "description": "The World",
+            "name": "Control: World"
+        },
+        {
+            "_id": "12f4fbab-d717-400c-a70a-4fa2795371bf",
+            "value": "Simon",
+            "description": "My Name",
+            "name": "Variation B: Simon"
+        },
+        {
+            "_id": "01060e4a-915e-46e0-bf2e-2256087a2c88",
+            "value": "LaunchDarkly",
+            "description": "The Business",
+            "name": "Variation C: LaunchDarkly"
+        }
+    ],
+    "variationJsonSchema": null,
+    "temporary": true,
+    "tags": [],
+    "_links": {
+        "parent": {
+            "href": "/api/v2/flags/default",
+            "type": "application/json"
+        },
+        "self": {
+            "href": "/api/v2/flags/default/2021-June-MABs-Demo-Temp",
+            "type": "application/json"
+        }
+    },
+    "maintainerId": "60d1fe67c0a0fd0d516a6d58",
+    "_maintainer": {
+        "_links": {
+            "self": {
+                "href": "/api/v2/members/60d1fe67c0a0fd0d516a6d58",
+                "type": "application/json"
+            }
+        },
+        "_id": "60d1fe67c0a0fd0d516a6d58",
+        "role": "owner",
+        "email": "siherron+demo@gmail.com"
+    },
+    "goalIds": [],
+    "experiments": {
+        "baselineIdx": 2,
+        "items": [
+            {
+                "metricKey": "more-clicks",
+                "_metric": {
+                    "_id": "60d43fa46004d70d2a5bfe2a",
+                    "key": "more-clicks",
+                    "name": "More Clicks",
+                    "kind": "custom",
+                    "_links": {
+                        "parent": {
+                            "href": "/api/v2/metrics/default",
+                            "type": "application/json"
+                        },
+                        "self": {
+                            "href": "/api/v2/metrics/default/more-clicks",
+                            "type": "application/json"
+                        }
+                    },
+                    "_site": {
+                        "href": "/experiments/metrics/more-clicks/edit",
+                        "type": "text/html"
+                    },
+                    "tags": null,
+                    "_creationDate": 1624522660420,
+                    "lastModified": {
+                        "date": "2021-06-24T08:17:40.42Z"
+                    },
+                    "maintainerId": "60d1fe67c0a0fd0d516a6d58",
+                    "_maintainer": {
+                        "_links": {
+                            "self": {
+                                "href": "/api/v2/members/60d1fe67c0a0fd0d516a6d58",
+                                "type": "application/json"
+                            }
+                        },
+                        "_id": "60d1fe67c0a0fd0d516a6d58",
+                        "role": "owner",
+                        "email": "siherron+demo@gmail.com"
+                    },
+                    "description": "",
+                    "isNumeric": false
+                },
+                "environments": [
+                    "production"
+                ],
+                "_environmentSettings": {
+                    "production": {
+                        "startDate": 1624522744187
+                    }
+                }
+            }
+        ]
+    },
+    "customProperties": {},
+    "archived": false,
+    "defaults": {
+        "onVariation": 0,
+        "offVariation": 0
+    },
+    "environments": {
+        "production": {
+            "on": true,
+            "archived": false,
+            "salt": "7120eaf26ba8440ba356644425b1c6ee",
+            "sel": "aaaa025c9497402ea5f74c99c73c8c1d",
+            "lastModified": 1624542169172,
+            "version": 14,
+            "targets": [],
+            "rules": [],
+            "fallthrough": {
+                "rollout": {
+                    "variations": [
+                        {
+                            "variation": 2,
+                            "weight": 25000,
+                            "_untracked": false
+                        },
+                        {
+                            "variation": 1,
+                            "weight": 25000,
+                            "_untracked": false
+                        },
+                        {
+                            "variation": 0,
+                            "weight": 25000,
+                            "_untracked": false
+                        },
+                        {
+                            "variation": 0,
+                            "weight": 25000,
+                            "_untracked": true
+                        }
+                    ],
+                    "experimentAllocation": {
+                        "defaultVariation": 0,
+                        "canReshuffle": true
+                    },
+                    "seed": 108508622
+                }
+            },
+            "offVariation": 0,
+            "prerequisites": [],
+            "_site": {
+                "href": "/default/production/features/2021-June-MABs-Demo-Temp",
+                "type": "text/html"
+            },
+            "_environmentName": "Production",
+            "trackEvents": false,
+            "trackEventsFallthrough": false,
+            "_debugEventsUntilDate": 1624539314603,
+            "_summary": {
+                "variations": {
+                    "0": {
+                        "rules": 0,
+                        "nullRules": 0,
+                        "targets": 0,
+                        "isOff": true,
+                        "rollout": 25000
+                    },
+                    "1": {
+                        "rules": 0,
+                        "nullRules": 0,
+                        "targets": 0,
+                        "rollout": 25000
+                    },
+                    "2": {
+                        "rules": 0,
+                        "nullRules": 0,
+                        "targets": 0,
+                        "rollout": 25000
+                    },
+                    "3": {
+                        "rules": 0,
+                        "nullRules": 0,
+                        "targets": 0,
+                        "rollout": 25000
+                    }
+                },
+                "prerequisites": 0
+            }
+        }
+    }
+}
