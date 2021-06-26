@@ -88,7 +88,10 @@ Promise.all([
 	metadata = json[0].metadata
 	totals = json[0].totals
 
-	console.log(metadata)
+//total number of variations in order to find the "remainder segment"
+	let variations = flagData.environments.production.fallthrough.rollout.variations
+	let remainderIdx = variations.length -1;
+
 // Is the flag on ? true : false
 	let on = flagData.environments.production.on
 	console.log(on ? true : false);
