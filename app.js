@@ -16,7 +16,7 @@ const getResults = `https://app.launchdarkly.com/api/v2/flags/${process.env.PROJ
 const targetFlag = `https://app.launchdarkly.com/api/v2/flags/${process.env.PROJECT}/${process.env.FLAG}?env=${process.env.ENV}`;
 
 //Container Variables for MABs data retrieval
-let treatments = []
+let metadata = []
 let totals = []
 let flagData = []
 
@@ -88,6 +88,7 @@ Promise.all([
 	metadata = json[0].metadata
 	totals = json[0].totals
 
+	console.log(metadata)
 // Is the flag on ? true : false
 	let on = flagData.environments.production.on
 	console.log(on ? true : false);
@@ -107,7 +108,7 @@ Promise.all([
 
 //Output the best performer for 'now'
 	let highestPerformer = completeMetadata.find((variant) => { return variant.cumulativeConversionRate.toFixed(3) * 100 == maxConversion })
-	console.log(highestPerformer.idx)
+	console.log(`Optimal is Index: ${highestPerformer.idx} and Key: ${highestPerformer.key}`)
 	patchCall.runPatch(highestPerformer.idx)
 
 })
