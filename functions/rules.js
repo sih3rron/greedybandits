@@ -7,7 +7,6 @@ module.exports = {
 			if(rule.rollout !== undefined) {
 				ruleRoll = rule.rollout
 				ruleRollIdx = i
-				console.log(ruleRoll.hasOwnProperty("experimentAllocation"))
 				if(ruleRoll.hasOwnProperty("experimentAllocation") === true) return ruleRollIdx 	
 			}
 

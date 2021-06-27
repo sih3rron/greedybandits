@@ -48,7 +48,7 @@ var context = {
 	}
   }
 
-console.log(context.key)
+//console.log(context.key)
 
 //LD Flag Logic and experiment 'stuff - this is so I had an active experiment to work with.
 const ldClient = LaunchDarkly.init(process.env.SDK_KEY);
@@ -64,22 +64,22 @@ ldClient.variation(process.env.FLAG, context, ", something is wrong?!?",
 					context: JSON.stringify(context)
 				});
 			})
-			app.listen(port, () => {
-				console.log(`${feature} is available on port ${port}!`)
-			})
+
 		ldClient.flush()
 		})
 	})
 
+//Fetch our targets' data
 	Promise.all([
 		fetch(getResults, getConfig).then(response => response.json()),
 		fetch(targetFlag, getConfig).then(response => response.json())
 	])
 	.then(json => {
+
+//Assign it to variables
 		flagData = json[1]
 		metadata = json[0].metadata
 		totals = json[0].totals
-
 		let on = flagData.environments.production.on
 		let isExperimentActive = flagData.experiments.items[0].environments
 
@@ -102,18 +102,20 @@ ldClient.variation(process.env.FLAG, context, ", something is wrong?!?",
 
 	})
 	.then(bandit => {
+
 //Where is the Experiment running? Rules OR Fallthrough
 		let rules = flagData.environments.production.rules
 		let findExperiment = rulesHelper.rules(rules)
-		console.log(findExperiment)
-		if(findExperiment === 1){
-			patchCall.runRulesPatch(bandit.idx, findExperiment)
-			console.log("\x1b[35m","Result: ")
-			console.log(bandit)
+
+//Patch Logic.
+		if(findExperiment !== undefined){
+			patchCall.runRulesPatch(bandit.idx, findExperiment, bandit.key)
+				console.log("Result: ")
+				console.log(bandit)
 		} else {
-			patchCall.runFallthroughPatch(bandit.idx)
-			console.log("\x1b[35m","Result: ")
-			console.log(bandit)
+			patchCall.runFallthroughPatch(bandit.idx, bandit.key)
+				console.log("Result: ")
+				console.log(bandit)
 		}
 	})
 	.catch(error => {
