@@ -64,7 +64,9 @@ ldClient.variation(process.env.FLAG, context, ", something is wrong?!?",
 					context: JSON.stringify(context)
 				});
 			})
-
+			app.listen(port, () => {
+				console.log(`${feature} is available on port ${port}!`)
+			})
 		ldClient.flush()
 		})
 	})
@@ -102,10 +104,10 @@ ldClient.variation(process.env.FLAG, context, ", something is wrong?!?",
 
 	})
 	.then(bandit => {
-
 //Where is the Experiment running? Rules OR Fallthrough
 		let rules = flagData.environments.production.rules
 		let findExperiment = rulesHelper.rules(rules)
+		//console.log(findExperiment)
 
 //Patch Logic.
 		if(findExperiment !== undefined){
