@@ -5,9 +5,9 @@ const path = require('path');
 const fetch = require('node-fetch');
 const { v4: uuidv4 } = require('uuid');
 const LaunchDarkly = require('launchdarkly-node-server-sdk');
-const { runPatch } = require('./functions/helpers');
 var app = express();
 var patchCall = require('./functions/helpers')
+var rulesHelper = require('./functions/rules')
 
 const port = process.env.PORT || 8080
 
@@ -71,35 +71,22 @@ ldClient.variation(process.env.FLAG, context, ", something is wrong?!?",
 		})
 	})
 
+	Promise.all([
+		fetch(getResults, getConfig).then(response => response.json()),
+		fetch(targetFlag, getConfig).then(response => response.json())
+	])
+	.then(json => {
+		flagData = json[1]
+		metadata = json[0].metadata
+		totals = json[0].totals
 
-// MABs Data retrieval logic.
+		let on = flagData.environments.production.on
+		let isExperimentActive = flagData.experiments.items[0].environments
 
-Promise.all([
-	fetch(getResults, getConfig).then(response => response.json()),
-	fetch(targetFlag, getConfig).then(response => response.json())
-])
-.then(json => {
-//Responses parsed into:
-// 1. Data on the entire flag.
-// 2. All of the Flag variations.
-// 3. The cumulative totals for each variation (or treatment)
-
-	flagData = json[1]
-	metadata = json[0].metadata
-	totals = json[0].totals
-
-//total number of variations in order to find the "remainder segment"
-	let variations = flagData.environments.production.fallthrough.rollout.variations
-	let remainderIdx = variations.length -1;
-
-// Is the flag on ? true : false
-	let on = flagData.environments.production.on
-	console.log(on ? true : false);
-
-// Is the experiment live ? true : false
-	let isExperimentActive = flagData.experiments.items[0].environments
-	console.log(Array.isArray(isExperimentActive)  && isExperimentActive.length > 0 ? true : false)
-
+//Guard Clauses
+		if(!on){  return console.error("\x1b[31m","Error: Switch the flag on") }
+		if(Array.isArray(isExperimentActive) && isExperimentActive.length === 0) return console.error("\x1b[31m","Error: There is no experiment running.") 
+	
 //Combining the Cumulative Treatment data with the metadata so we have a clear picture of optimal variant and the variants indices.
 	let wholeMetadata = metadata.map((item, i) => Object.assign({}, item, totals[i]));
 	let completeMetadata = wholeMetadata.map((item, idx) => ({idx, ...item}));
@@ -111,10 +98,24 @@ Promise.all([
 
 //Output the best performer for 'now'
 	let highestPerformer = completeMetadata.find((variant) => { return variant.cumulativeConversionRate.toFixed(3) * 100 == maxConversion })
-	console.log(`Optimal is Index: ${highestPerformer.idx} and Key: ${highestPerformer.key}`)
-	patchCall.runPatch(highestPerformer.idx)
+	return highestPerformer
 
-})
-.catch(error => {
-	console.warn(error);
-})
+	})
+	.then(bandit => {
+//Where is the Experiment running? Rules OR Fallthrough
+		let rules = flagData.environments.production.rules
+		let findExperiment = rulesHelper.rules(rules)
+		console.log(findExperiment)
+		if(findExperiment === 1){
+			patchCall.runRulesPatch(bandit.idx, findExperiment)
+			console.log("\x1b[35m","Result: ")
+			console.log(bandit)
+		} else {
+			patchCall.runFallthroughPatch(bandit.idx)
+			console.log("\x1b[35m","Result: ")
+			console.log(bandit)
+		}
+	})
+	.catch(error => {
+		console.warn(error);
+	})
