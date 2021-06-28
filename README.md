@@ -74,4 +74,11 @@ PORT= <<The localhost port you are running this demo on.>>
 
 After you have applied all of the Environment variables, you will need to setup and start your Experiment Recording data. 
 
-To start your server use `$ node app` 
+To start your server use `$ node app`.
+
+
+
+# Points to note.
+
+* This script is only setup to look at Rate (%) metrics. Nothing has been built for Numerate measures.
+* Likewise, nothing has been built to acknowledge whether success is More or Fewer than the baseline. It looks solely at which rate is the highest.
