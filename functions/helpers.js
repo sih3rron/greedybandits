@@ -15,7 +15,7 @@ module.exports = {
 				"comment": `This is an Automated MABs allocation. Treatment: ${treatmentName} assigned.`,
 				"patch": [{ 
 					"op": "replace",
-					"path": "/environments/production/fallthrough/rollout/experimentAllocation/defaultVariation",
+					"path": `/environments/${process.env.ENV}/fallthrough/rollout/experimentAllocation/defaultVariation`,
 					"value": index
 				}]
 			})
@@ -38,7 +38,7 @@ module.exports = {
 				"comment": `This is an Automated MABs allocation. Treatment: ${treatmentName} assigned.`,
 				"patch": [{ 
 						"op": "replace",
-						"path": "/environments/production/rules/"+findExperiment+"/rollout/experimentAllocation/defaultVariation",
+						"path": `/environments/${process.env.ENV}/rules/`+findExperiment+"/rollout/experimentAllocation/defaultVariation",
 						"value": index
 					}]
 			})

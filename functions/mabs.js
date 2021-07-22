@@ -35,7 +35,7 @@ module.exports = {
 				flagData = json[1]
 				metadata = json[0].metadata
 				totals = json[0].totals
-				let on = flagData.environments.production.on
+				let on = flagData.environments[`${process.env.ENV}`].on
 				let isExperimentActive = flagData.experiments.items[0].environments
 
 			//Guard Clauses
@@ -48,7 +48,8 @@ module.exports = {
 
 			//Your maximum conversion rate
 			let maxConversion = Math.max.apply(Math, completeMetadata.map((variant) => { 
-				return variant.cumulativeConversionRate.toFixed(3) * 100;
+				if (variant.cumulativeConversionRate == null) return 0
+				else return variant.cumulativeConversionRate.toFixed(3) * 100;
 			}))
 
 			//Output the best performer for 'now'
@@ -58,7 +59,7 @@ module.exports = {
 			})
 			.then(bandit => {
 			//Where is the Experiment running? Rules OR Fallthrough
-				let rules = flagData.environments.production.rules
+				let rules = flagData.environments[`${process.env.ENV}`].rules
 				let findExperiment = rulesHelper.rules(rules)
 				//console.log(findExperiment)
 
