@@ -8,7 +8,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    environment: SSE
     steps:
       - uses: actions/checkout@v2
       - name: Multi-Armed Bandit in Node
