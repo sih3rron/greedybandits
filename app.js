@@ -50,3 +50,5 @@ ldClient.variation(process.env.FLAG, context, ", something is wrong?!?",
 	})
 
 mabs.epsilonBandits();
+
+ldClient.close();
