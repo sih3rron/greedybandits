@@ -19,9 +19,9 @@ jobs:
       - run: npm install
       - name: Run App
         env:
-          API_TOKEN: '${{ secrets.API_TOKEN }}'
-          CLIENT_SDK_KEY: '${{ secrets.CLIENT_SDK_KEY }}'
-          SDK_KEY: '${{ secrets.SDK_KEY }}'
+          API_TOKEN: ${{ secrets.API_TOKEN }}
+          CLIENT_SDK_KEY: ${{ secrets.CLIENT_SDK_KEY }}
+          SDK_KEY: ${{ secrets.SDK_KEY }}
           FLAG: trial-duration
           PROJECT: support-service
           ENV: rneal
