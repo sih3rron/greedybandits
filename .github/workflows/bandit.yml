@@ -2,7 +2,7 @@ name: Multi-Armed Bandit
 
 on:
   schedule:
-    - cron: '0 */1 * * *'
+    - cron: '1 * * * *'
 
 jobs:
   build:
