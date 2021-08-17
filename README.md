@@ -16,7 +16,7 @@ Some good examples might be:
 
 ### OK, so what are we actually doing?
 
-In this instance we would we looking to do the following: 
+In this instance we would be looking to do the following: 
 
 1. Portion off a small subset of our audience (_whatever that audience may look like_) to experiment on. 
 2. We divide that into our variations/treatments as we would do with any other experiment.
@@ -81,4 +81,6 @@ To start your server use `$ node app`.
 # Points to note.
 
 * This script is only setup to look at Rate (%) metrics. Nothing has been built for Numerate measures.
-* Likewise, nothing has been built to acknowledge whether success is More or Fewer than the baseline. It looks solely at which rate is the highest.
+* Likewise, nothing has been built to acknowledge whether success is Greater or Lesser than the baseline. Right now, it looks solely at which rate is the highest.
+* Finally, you'll notice there is nothing in the code to determine the duration within which you would run your checks as of right now you would do that with an `interval` or `timeout` setting yourselve.
+
